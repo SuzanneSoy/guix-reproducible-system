@@ -1,2 +1,2 @@
 all:
-	"$$(guix system vm config.scm)"
+	"$$(guix system vm-image config.scm)"
