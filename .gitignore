@@ -1,1 +1,2 @@
-*.nar
+/*.nar
+/signing-key.pub
