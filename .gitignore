@@ -1,2 +1,4 @@
 /*.nar
+/*.sizes
 /signing-key.pub
+/vm-image
