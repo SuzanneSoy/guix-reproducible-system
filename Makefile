@@ -16,7 +16,7 @@ all: hello.tar hello.sizes vm-image to-be-run-in-vm.sh Makefile
 	  "$$(wc -c "to-be-run-in-vm.sh" | sed -e 's/^[[:space:]]*\([0-9][0-9]*\)[[:space:]].*$$/\1/')" \
 	  "$$(wc -c "$*.tar" | sed -e 's/^[[:space:]]*\([0-9][0-9]*\)[[:space:]].*$$/\1/')" \
 	  "" \
-	  > $@
+	  > '$@'
 
 %.nar: Makefile
 	guix archive --export --recursive '$*' > '$@'
