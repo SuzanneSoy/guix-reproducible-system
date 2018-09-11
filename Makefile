@@ -8,20 +8,21 @@ all: hello.tar hello.sizes vm-image to-be-run-in-vm.sh Makefile
 	  vm-image-${tmp_image} \
 	  -drive format=raw,file=hello.sizes,if=ide,index=1,media=disk \
 	  -drive format=raw,file=to-be-run-in-vm.sh,if=ide,index=2,media=disk \
-	  -drive format=raw,file=hello.nar,if=ide,index=3,media=disk \
-	  # -drive format=raw,file=signing-key.pub,if=ide,index=4,media=disk
+	  -drive format=raw,file=hello.tar,if=ide,index=3,media=disk
 	rm vm-image-${tmp_image}
 
-%.sizes: %.nar signing-key.pub to-be-run-in-vm.sh Makefile
-	printf "%020d\\n%020d\\n%020d\\n%$$((512-((20+1)*3)-1))s\\n" \
+%.sizes: %.tar signing-key.pub to-be-run-in-vm.sh Makefile
+	printf "%020d\\n%020d\\n%$$((512-((20+1)*2)-1))s\\n" \
 	  "$$(wc -c "to-be-run-in-vm.sh" | sed -e 's/^[[:space:]]*\([0-9][0-9]*\)[[:space:]].*$$/\1/')" \
-	  "$$(wc -c "$*.nar" | sed -e 's/^[[:space:]]*\([0-9][0-9]*\)[[:space:]].*$$/\1/')" \
-	  "$$(wc -c "signing-key.pub" | sed -e 's/^[[:space:]]*\([0-9][0-9]*\)[[:space:]].*$$/\1/')" \
+	  "$$(wc -c "$*.tar" | sed -e 's/^[[:space:]]*\([0-9][0-9]*\)[[:space:]].*$$/\1/')" \
 	  "" \
 	  > $@
 
 %.nar: Makefile
 	guix archive --export --recursive '$*' > '$@'
+
+%.tar: %.nar signing-key.pub Makefile
+	tar -cf '$@' '$*.nar' signing-key.pub
 
 signing-key.pub: /etc/guix/signing-key.pub Makefile
 	cp '$<' '$@'
