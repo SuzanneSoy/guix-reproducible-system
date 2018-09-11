@@ -1,7 +1,7 @@
 SHELL = bash -euET -o pipefail -c
 tmp_image := $(shell echo $$$$)
 
-all: hello.nar hello.sizes signing-key.pub vm-image Makefile
+all: hello.tar hello.sizes vm-image to-be-run-in-vm.sh Makefile
 	qemu-img create -f qcow2 -o backing_file=vm-image vm-image-${tmp_image}
 # TODO: qcow2: make a derived image.
 	qemu-system-x86_64 -enable-kvm -m 256 \
@@ -12,7 +12,7 @@ all: hello.nar hello.sizes signing-key.pub vm-image Makefile
 	  # -drive format=raw,file=signing-key.pub,if=ide,index=4,media=disk
 	rm vm-image-${tmp_image}
 
-%.sizes: %.nar signing-key.pub Makefile
+%.sizes: %.nar signing-key.pub to-be-run-in-vm.sh Makefile
 	printf "%020d\\n%020d\\n%020d\\n%$$((512-((20+1)*3)-1))s\\n" \
 	  "$$(wc -c "to-be-run-in-vm.sh" | sed -e 's/^[[:space:]]*\([0-9][0-9]*\)[[:space:]].*$$/\1/')" \
 	  "$$(wc -c "$*.nar" | sed -e 's/^[[:space:]]*\([0-9][0-9]*\)[[:space:]].*$$/\1/')" \
