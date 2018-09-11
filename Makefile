@@ -1,3 +1,4 @@
+SHELL = bash -euET -o pipefail -c
 tmp_image := $(shell echo $$$$)
 
 all: hello.nar hello.sizes signing-key.pub vm-image Makefile
