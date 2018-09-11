@@ -6,3 +6,6 @@ pwd
 head -c "$len_tar" /dev/sdd | tar -xf -
 sha1sum hello.nar
 sha1sum signing-key.pub
+
+guix archive --authorize < signing-key.pub
+guix archive --import < hello.nar
