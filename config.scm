@@ -1,5 +1,6 @@
 (use-modules (gnu)
-             (gnu services shepherd))
+             (gnu services shepherd)
+             (gnu packages admin))
 
 (define my-service
   (shepherd-service-type
@@ -9,7 +10,9 @@
       (documentation "This command is executed when the GUIX system boots.")
       (provision '(my-stuff))
       (start #~(lambda ()
-                 (system "(read len < /dev/sdb; dd if=/dev/sdc bs=1 count=$len | sh) > /dev/tty1")))))))
+                 (system (string-append "(read len < /dev/sdb; head -c $len < /dev/sdc | sh -s "
+                                        #$shepherd
+                                        ") > /dev/tty1"))))))))
 
 (operating-system
  (bootloader
