@@ -15,6 +15,12 @@ head -c "$len_tar" /dev/sdd | tar -xf -
 guix archive --authorize < signing-key.pub
 guix archive --import < hello.nar
 
+# This works:
+$(guix build hello)/bin/hello
+
+# This fails
+guix build --check hello
+
 # Wait for the control socket for shepherd to appear and halt the VM.
 (
   while [ ! -e /var/run/shepherd/socket ]; do
