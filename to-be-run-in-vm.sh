@@ -12,6 +12,10 @@ echo
 pwd
 head -c "$len_tar" /dev/sdd | tar -xf -
 
+# Checking that hello is not available yet:
+$(guix build hello)/bin/hello && echo "Expected hello to be missing at this point" && exit 1
+
+# Import hello.nar
 guix archive --authorize < signing-key.pub
 guix archive --import < hello.nar
 
