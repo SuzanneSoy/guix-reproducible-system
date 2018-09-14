@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 if [ "$#" -ne 1 ]; then
   echo "Usage: $0 shepherd"
