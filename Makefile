@@ -19,7 +19,7 @@ all: hello.tar hello.sizes vm-image to-be-run-in-vm.sh Makefile
 	  > '$@'
 
 %.nar: Makefile
-	guix archive --export --recursive '$*' > '$@'
+	guix archive --export --recursive '$*' $$(guix build --source --sources=transitive '$*') > '$@'
 
 %.tar: %.nar signing-key.pub Makefile
 	tar -cf '$@' '$*.nar' signing-key.pub
