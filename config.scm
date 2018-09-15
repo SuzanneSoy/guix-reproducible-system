@@ -18,7 +18,9 @@
  (bootloader
   (bootloader-configuration
    (bootloader grub-bootloader)
-   (target "/dev/sdX")))
+   (target "/dev/sdX")
+   (timeout 1)))
+ (kernel-arguments '("console=ttyS0"))
  (host-name "hostname")
  (file-systems
   (cons (file-system
