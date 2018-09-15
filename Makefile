@@ -30,7 +30,7 @@ signing-key.pub: /etc/guix/signing-key.pub Makefile
 
 vm-image: config.scm Makefile
 	rm -f '$@'
-	ln -sf "$$(guix system vm-image config.scm)" '$@'
+	ln -sf "$$(guix system vm-image --image-size=4G config.scm)" '$@'
 
 clean:
 	rm -f vm-image vm-image-tmp-* signing-key.pub \
