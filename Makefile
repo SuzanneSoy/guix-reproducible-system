@@ -19,7 +19,29 @@ all: hello.tar hello.sizes vm-image to-be-run-in-vm.sh Makefile
 	  > '$@'
 
 %.nar: Makefile
-	guix archive --export --recursive '$*' $$(guix build --source --sources=transitive '$*') > '$@'
+	guix archive --export --recursive '$*' $$(guix build --source --sources=transitive '$*' $$(for i in \
+	  binutils-2.23.2.tar.xz \
+	  bison-3.0.4.tar.xz \
+	  gc-7.6.4.tar.gz \
+	  gcc-4.8.2.tar.xz \
+	  glibc-2.18.tar.xz \
+	  guile-2.0.9.tar.xz \
+	  gcc-4.9.4.tar.xz \
+	  gettext-0.19.8.1.tar.gz \
+	  gmp-6.1.2.tar.xz \
+	  guile-2.2.3.tar.xz \
+	  libatomic_ops-7.6.4.tar.gz \
+	  libffi-3.2.1.tar.gz \
+	  libtool-2.4.6.tar.xz \
+	  libunistring-0.9.9.tar.xz \
+	  m4-1.4.18.tar.xz \
+	  perl-5.26.1.tar.gz \
+	  pkg-config-0.29.2.tar.gz \
+	  static-binaries.tar.xz \
+	  texinfo-6.5.tar.xz \
+	  zlib-1.2.11.tar.gz; do \
+	    echo /gnu/store/*-$$i.drv; \
+	  done) | sort -u) > '$@'
 
 %.tar: %.nar signing-key.pub Makefile
 	tar -cf '$@' '$*.nar' signing-key.pub
