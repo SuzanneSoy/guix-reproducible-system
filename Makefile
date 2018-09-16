@@ -4,7 +4,7 @@ tmp_image := $(shell echo $$$$)
 all: hello.tar hello.sizes vm-image to-be-run-in-vm.sh Makefile
 	qemu-img create -f qcow2 -o backing_file=vm-image vm-image-tmp-${tmp_image}
 # TODO: qcow2: make a derived image.
-	qemu-system-x86_64 -enable-kvm -m 256 -nographic \
+	qemu-system-x86_64 -enable-kvm -m 4096 -nographic \
 	  vm-image-tmp-${tmp_image} \
 	  -drive format=raw,file=hello.sizes,if=ide,index=1,media=disk \
 	  -drive format=raw,file=to-be-run-in-vm.sh,if=ide,index=2,media=disk \
@@ -52,7 +52,7 @@ signing-key.pub: /etc/guix/signing-key.pub Makefile
 
 vm-image: config.scm Makefile
 	rm -f '$@'
-	ln -sf "$$(guix system vm-image --image-size=4G config.scm)" '$@'
+	ln -sf "$$(guix system vm-image --image-size=8G config.scm)" '$@'
 
 clean:
 	rm -f vm-image vm-image-tmp-* signing-key.pub \
